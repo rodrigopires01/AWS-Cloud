@@ -1,0 +1,38 @@
+Install and configure Nginx package in your server.
+
+
+-> apt install nginx -y
+
+
+-> cd /etc/nginx/snippets/
+
+
+-> cp snakeoil.conf www.inova.pt.conf && nano www.inova.pt.conf 
+#Change the certificate root to the right place.
+
+
+-> cd ../sites-available/
+
+
+-> cp default secure && nano secure
+#Delete everything related to http/ port 80.
+#Uncomment everything that is related to "listen 443".
+#Uncomment "include".
+#Change the root.
+
+
+-> rm /var/www/html/index.nginx-debian.html && nano /var/www/html/index.html
+#Type something like: "Welcome to my server on port 80!"
+
+
+-> mkdir /var/www/htmls && nano /var/www/htmls/index.html
+#Type something like: "Welcome to my server on port 443!"
+
+
+-> cd /etc/nginx/sites-enabled/
+
+
+-> ln -s /etc/nginx/sites-available/secure secure
+
+
+-> systemctl restart nginx
