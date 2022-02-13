@@ -1,17 +1,14 @@
-Install and configure DNS package in your server. Package: ISC - BIND9.
+Install and configure DNS package in your server.
 
 
 -> apt install bind9 bind9-utils -y
 
 
-
 -> cd /etc/bind
-
 
 
 -> nano named.conf.options
 #Uncomment the forwarders.
-
 
 
 -> nano forward.inova.pt 
@@ -40,7 +37,6 @@ sales           IN      A       10.0.100.106
 marketing       IN      A       10.0.100.107
 
 
-
 -> nano reverse.inova.pt
 #Change the name of the server.
 #Change the IPs.
@@ -65,7 +61,6 @@ $TTL    604800
 107.100 IN      PTR     marketing.inova.pt.
 
 
-
 -> nano named.conf.local
 #Add this:
 
@@ -88,9 +83,7 @@ zone "enta.pt" {
 };
 
 
-
 -> systemctl enable --now bind9.service
-
 
 
 ##################################################################################################################
@@ -107,7 +100,6 @@ key DHCP_UPDATER {
 };
 
 
-
 -> nano named.conf.local
 #Add this inside each of your zones:
 
@@ -122,7 +114,6 @@ zone "inova.pt." {
         file "/etc/bind/forward.inova.pt";
         allow-update { key DHCP_UPDATER; };
 };
-
 
 
 -> nano /etc/dhcp/dhcpd.conf   >> 
@@ -144,7 +135,6 @@ zone 0.10.in-addr.arpa. {
          primary 10.0.100.100;
          key DHCP_UPDATER;
 }
-
 
 
 -> systemctl restart isc-dhcp-server && systemctl restart bind9
