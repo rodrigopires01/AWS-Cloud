@@ -1,0 +1,31 @@
+Install and configure DHCP package in your server.
+
+
+-> yum -y install dhcp
+
+
+-> cp /usr/share/doc/dhcp-4.2.5/dhcpd.conf.example /etc/dhcp/dhcpd.conf 
+
+
+-> nano /etc/dhcp/dhcpd.conf
+#Change domain name to "enta.pt" and "ns1.enta.pt" & "ns2.enta.pt".
+#Uncomment line 24. (authoritative)
+#Add the following lines to the end of the document.
+
+subnet 172.31.160.0 netmask 255.255.255.0 {
+  range 172.31.160.200 172.31.160.230;
+  option subnet-mask 255.255.255.0;
+  option routers 172.31.160.100;
+  option broadcast-address 172.31.160.255;
+  option ntp-servers europe.pool.ntp.org;
+  option domain-name-servers 172.31.160.100;
+  default-lease-time 600;
+  max-lease-time 7200;
+}
+
+
+-> systemctl enable --now dhcpd
+
+
+-> systemctl status dhcpd
+#Its normal if it says that its not working on "eth0"
