@@ -1,6 +1,9 @@
 Install and configure vsftpd package in your server.
 
 
+You have 3 available configurations types: Insecure, Implicit and Explicit.
+
+
 -> apt install vsftpd -y
 
 
@@ -8,11 +11,10 @@ Install and configure vsftpd package in your server.
 #Uncomment "write_enable=YES"
 
 
-You have 3 available configurations types: Insecure, Implicit and Explicit.
+########################
+#Explicit Configuration#
+########################
 
-#########################
-#Explicit Configuration:#
-#########################
 
 -> nano /etc/vsftpd.conf
 #Add your certificates and change ssl_enable to yes: 
@@ -34,10 +36,10 @@ require_ssl_reuse=NO
 ssl_ciphers=HIGH
 
 
-
 #########################
 #Implicit Configuration:#
 #########################
+
 
 -> nano /etc/vsftpd.conf
 #Just add this lines:
@@ -45,10 +47,10 @@ implicit_ssl=YES
 listen_port=990
 
 
-
 #########################
 #Insecure Configuration:#
 #########################
+
 
 -> nano /etc/vsftpd.conf
 #Change ssl_enable=YES to ssl_enable=NO
