@@ -17,14 +17,22 @@ Click in "Save";
 -> apt install netfilter-persistent iptables-persistent -y
 
 
-
 -> systemctl enable --now iptables
-
 
 
 -> iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE && netfilter-persistent save
 
 
-
 -> nano /etc/sysctl.d/99-sysctl.conf && sysctl -p
 #Uncomment this line: "net.ipv4.ip_forward = 1"
+
+
+####################
+#IP Tables commands#
+####################
+
+Redirect any incoming traffic on port 80 or 443 into your server IP to another machine in the same network.
+
+-> iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination X.X.X.X
+
+-> iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j DNAT --to-destination X.X.X.X
