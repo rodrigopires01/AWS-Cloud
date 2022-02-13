@@ -1,4 +1,4 @@
-Install and configure DHCP package in your server. Package: ISC - DHCP.
+Install and configure DHCP package in your server.
 
 
 -> apt install isc-dhcp-server -y
