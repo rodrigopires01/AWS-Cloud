@@ -1,0 +1,79 @@
+Install and configure DNS package in your server.
+
+
+-> yum -y install bind bind-utils
+
+
+-> nano /etc/named.conf
+#In "listen-on port 53" add "any;"
+#In "allow-query" add "any;".
+#At the end of the file before "include" add our zones. Example:
+
+
+zone "enta.pt" IN {
+        type master;
+        file "forward.enta.pt";
+        allow-update { none; };
+};
+
+zone "31.172.in-addr.arpa" IN {
+        type master;
+        file "reverse.enta.pt";
+        allow-update { none; };
+};
+
+
+-> cd /var/named/
+
+
+-> nano forward.enta.pt
+
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+                IN      NS      ns
+@               IN      A       172.31.100.100
+ns              IN      A       172.31.100.100
+control         IN      A       172.31.100.100
+www             IN      CNAME   enta.pt.
+central         IN      A       172.31.100.104
+wazuh           IN      A       172.31.100.105
+sales           IN      A       172.31.100.106
+marketing       IN      A       172.31.100.107
+
+
+-> nano reverse.enta.pt
+
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      enta.pt.
+100.100 IN      PTR     enta.pt.
+100.100 IN      PTR     control.enta.pt.
+103.100 IN      PTR     www.enta.pt.
+104.100 IN      PTR     central.enta.pt.
+105.100 IN      PTR     wazuh.enta.pt.
+106.100 IN      PTR     sales.enta.pt.
+107.100 IN      PTR     marketing.enta.pt.
+
+
+-> chown root:named forward.enta.pt
+
+
+-> chown root:named reverse.enta.pt
+
+
+-> systemctl enable --now named
+
+
+-> systemctl restart named
