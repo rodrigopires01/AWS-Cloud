@@ -29,3 +29,15 @@ subnet 172.31.160.0 netmask 255.255.255.0 {
 
 -> systemctl status dhcpd
 #Its normal if it says that its not working on "eth0"
+
+
+Test the DHCP server (Client Machine):
+
+
+-> apt install build-essential -y
+
+
+-> git clone https://github.com/saravana815/dhtest.git && cd dhtest/ && make
+
+
+-> ./dhtest -m 00:11:22:33:44:55 -i eth1
