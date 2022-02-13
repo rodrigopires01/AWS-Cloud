@@ -1,0 +1,236 @@
+<=========================>
+Instalar e Configurar o DNS
+<=========================>
+
+-> apt install bind9 bind9-utils bind9-doc -y
+
+
+-> cd /etc/bind
+
+
+
+-> nano named.conf.options   >>   Descomentar as linhas dos forwarders.
+
+
+
+-> nano db.forward.enta.pt 
+- Trocar o nome do server e os IPs. 
+
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@	IN	NS	enta.pt.
+@       IN      A       172.31.144.100
+luxsrv  IN      A       172.31.144.100
+luxcli  IN      A       172.31.144.101
+mailsrv IN      A       172.31.144.100
+www     IN      CNAME   enta.pt.
+central IN      CNAME   enta.pt.
+smtp    IN      MX      10 mailsrv.enta.pt.
+
+
+
+-> nano db.reverse.enta.pt
+- Trocar o nome do server e os IPs.
+
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      enta.pt.
+100.144 IN      PTR     enta.pt.
+100.144 IN      PTR     www.enta.pt.
+100.144 IN      PTR     central.enta.pt.
+100.144 IN      PTR     luxsrv.enta.pt.
+100.144 IN      PTR     luxcli.enta.pt.
+100.144 IN      PTR     mailsrv.enta.pt.
+
+
+
+-> nano named.conf.local
+- Colar isto:
+
+zone "enta.pt" {
+        type master;
+        file "/etc/bind/db.forward.enta.pt";
+};
+
+zone "32.172.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.reverse.enta.pt";
+};
+
+
+
+-> systemctl start bind9 && systemctl enable bind9 && systemctl restart bind9 && systemctl status bind9
+
+
+
+<==========================>
+Instalar e Configurar o DHCP
+<==========================>
+
+
+-> apt install isc-dhcp-server -y
+
+
+
+-> nano /etc/default/isc-dhcp-server
+- Adicionar nas INTERFACESv4 a interface que vamos usar: "eth1"
+
+
+
+-> nano /etc/dhcp/dhcpd.conf
+
+- Alterar o domain name para "enta.pt" e em baixo para "ns1.enta.pt" e "ns2.enta.pt".
+- descomentar a linha 24 (authoritative).
+- Adicionar as seguintes linhas no fim do documento.
+
+subnet 172.31.144.0 netmask 255.255.255.0 {
+  range 172.31.144.200 172.31.144.230;
+  option subnet-mask 255.255.255.0;
+  option routers 172.31.144.100;
+  option broadcast-address 172.31.144.255;
+  option ntp-servers europe.pool.ntp.org;
+  option domain-name-servers 172.31.144.100;
+  default-lease-time 600;
+  max-lease-time 7200;
+}
+
+
+
+-> systemctl start isc-dhcp-server && systemctl enable isc-dhcp-server && systemctl restart isc-dhcp-server && systemctl status isc-dhcp-server 
+
+
+
+<===========================================>
+Passos para testar se o DHCP está a funcionar
+<===========================================>
+
+-> apt install build-essential -y
+
+
+
+-> git clone https://github.com/saravana815/dhtest.git && cd dhtest/ && make
+
+
+
+-> ./dhtest -m 00:11:22:33:44:55 -i eth1
+
+
+
+<=====================================>
+Configurar DDNS na máquina do servidor:
+<=====================================>
+
+-> nano /etc/bind/named.conf.local   >> Adicionar o seguinte bloco de codigo.
+
+key DHCP_UPDATER {
+         algorithm HMAC-MD5.SIG-ALG.REG.INT;
+         secret pRP5FapFoJ95JEL06sv4PQ==;
+};
+
+Também adicionar isto ás tuas zones!
+
+allow-update { key DHCP_UPDATER; };
+
+Exemplo: 
+
+zone "enta.pt." {
+        type master;
+        file "/var/lib/bind/db.enta.pt";
+->      allow-update { key DHCP_UPDATER; };
+};
+
+
+-> nano /etc/dhcp/dhcpd.conf   >> Alterar o "ddns-update-style" para standard e adicionar os seguintes blocos de codigo logo abaixo. (Atenção ao nome das zones e aos IPs)
+
+
+key DHCP_UPDATER {
+         algorithm HMAC-MD5.SIG-ALG.REG.INT;
+         secret pRP5FapFoJ95JEL06sv4PQ==;
+}
+
+zone enta.pt. {
+         primary 172.31.96.100;
+         key DHCP_UPDATER;
+}
+
+zone 31.172.in-addr.arpa. {
+         primary 172.31.96.100;
+         key DHCP_UPDATER;
+}
+
+
+
+-> cd /etc/bind
+
+
+
+-> mv db.enta.pt /var/lib/bind/	>>
+-> mv db.grsi.pt /var/lib/bind/	>>
+-> mv db.31.172 /var/lib/bind/	>> Mover os nossos ficheiros de configuração para a pasta /var/lib/bind
+-> mv db.0.168.192 /var/lib/bind/	>>
+-> mv db.10 /var/lib/bind/		>>
+
+
+
+-> nano named.conf.local   >> Alterar o path aqui de "/etc/bind/*****" para "/var/lib/bind/". (CRTL + \)
+
+
+
+-> cd /var/lib/bind
+
+
+
+-> chmod g+w *
+
+
+
+-> systemctl restart isc-dhcp-server && systemctl restart bind9
+
+
+
+<==========================>
+Ativar NAT e IPv4 Forwarding
+<==========================>
+
+- Ir a AWS;
+
+- Selecionar a instance do servidor;
+
+- Clicar em "Actions";
+
+- Clicar em "Networking";
+
+- Clicar em "Change source/destination check";
+
+- Clicar em "Stop";
+
+- Clicar em "Save";
+
+
+
+-> apt install netfilter-persistent iptables-persistent -y
+
+
+
+-> systemctl enable iptables && systemctl start iptables
+
+
+
+-> iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE && netfilter-persistent save
+
+
+-> nano /etc/sysctl.d/99-sysctl.conf && sysctl -p
+- Adicionar esta linha no fim do documento:
+net.ipv4.ip_forward = 1
