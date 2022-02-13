@@ -8,7 +8,7 @@
 4. Set up the remote access client;<br>
 5. Finally create the "enta.pt" network on the US East region.<br>
 <br>
-<h4> align="center">VPC Creation - US West</h3>
+<h4 align="center">VPC Creation - US West</h3>
 1. Head over to the VPC service and click on the orange button that says <b>"Launch VPC Wizard"</b>;<br>
 2. Choose <b>"VPC with a Single Public Subnet"</b> and press <b>"Select"</b>;<br>
 3. In the <b>"IPv4 CIDR block:"</b> type <b>"10.0.0.0/16"</b>;<br>
@@ -17,7 +17,7 @@
 6. Press <b>"Create VPC"</b>.<br>
 
 <br>
-<h4> align="center">VPC Creation - US East</h3>
+<h4 align="center">VPC Creation - US East</h3>
 1. Head over to the VPC service and click on the orange button that says <b>"Launch VPC Wizard"</b>;<br>
 2. Choose <b>"VPC with a Single Public Subnet"</b> and press <b>"Select"</b>;<br>
 3. In the <b>"IPv4 CIDR block:"</b> type <b>"172.31.0.0/16"</b>;<br>
