@@ -9,9 +9,9 @@
 5. Finally create the "enta.pt" network on the US East region.<br>
 <br>
 <h3 align="center">VPC Creation - US East</h3>
-1. Head over to the VPC service and click on the orange button that says "Launch VPC Wizard";<br>
-2. Choose "VPC with a Single Public Subnet" and press "Select";<br>
-3. In the "IPv4 CIDR block:" type "10.0.0.0/16";<br>
-4. Edit the "Public subnet's IPv4 CIDR:" to "10.0.100.0/24";<br>
-5. Choose your "Availability Zone:" as "us-west-1a";<br>
-6. Press "Create VPC".<br>
+1. Head over to the VPC service and click on the orange button that says <b>Launch VPC Wizard</b>;<br>
+2. Choose <b>VPC with a Single Public Subnet</b> and press <b>Select</b>;<br>
+3. In the <b>IPv4 CIDR block:</b> type <b>10.0.0.0/16</b>;<br>
+4. Edit the <b>Public subnet's IPv4 CIDR:</b> to <b>10.0.100.0/24</b>;<br>
+5. Choose your <b>Availability Zone:</b> as <b>us-west-1a</b>;<br>
+6. Press <b>Create VPC"</b>.<br>
