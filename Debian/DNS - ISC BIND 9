@@ -4,11 +4,14 @@ Install and configure DNS package in your server. Package: ISC - BIND9.
 -> apt install bind9 bind9-utils -y
 
 
+
 -> cd /etc/bind
+
 
 
 -> nano named.conf.options
 #Uncomment the forwarders.
+
 
 
 -> nano forward.inova.pt 
@@ -37,6 +40,7 @@ sales           IN      A       10.0.100.106
 marketing       IN      A       10.0.100.107
 
 
+
 -> nano reverse.inova.pt
 #Change the name of the server.
 #Change the IPs.
@@ -61,6 +65,7 @@ $TTL    604800
 107.100 IN      PTR     marketing.inova.pt.
 
 
+
 -> nano named.conf.local
 #Add this:
 
@@ -83,4 +88,63 @@ zone "enta.pt" {
 };
 
 
+
 -> systemctl enable --now bind9.service
+
+
+
+##################################################################################################################
+#If you have both DHCP and DNS running in the same machine, you can add this configuration in order to have DDNS.#
+##################################################################################################################
+
+
+-> nano /etc/bind/named.conf.local
+#Add the following code:
+
+key DHCP_UPDATER {
+         algorithm HMAC-MD5.SIG-ALG.REG.INT;
+         secret pRP5FapFoJ95JEL06sv4PQ==;
+};
+
+
+
+-> nano named.conf.local
+#Add this inside each of your zones:
+
+allow-update { key DHCP_UPDATER; };
+
+
+########################
+#Should look like this:#
+########################
+zone "inova.pt." {
+        type master;
+        file "/etc/bind/forward.inova.pt";
+        allow-update { key DHCP_UPDATER; };
+};
+
+
+
+-> nano /etc/dhcp/dhcpd.conf   >> 
+#Change "ddns-update-style" to standard.
+#Add the following code (Be careful with the name of the zones and the IPs:
+
+
+key DHCP_UPDATER {
+         algorithm HMAC-MD5.SIG-ALG.REG.INT;
+         secret pRP5FapFoJ95JEL06sv4PQ==;
+}
+
+zone inova.pt. {
+         primary 10.0.100.100;
+         key DHCP_UPDATER;
+}
+
+zone 0.10.in-addr.arpa. {
+         primary 10.0.100.100;
+         key DHCP_UPDATER;
+}
+
+
+
+-> systemctl restart isc-dhcp-server && systemctl restart bind9
