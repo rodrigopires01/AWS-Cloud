@@ -1,0 +1,44 @@
+Install and configure Apache2 package in your server.
+
+
+-> apt install nfs-kernel-server -y
+
+
+-> nano /etc/hosts
+#Add: 10.0.100.100 control.inova.pt
+
+
+-> nano /etc/exports
+#Add this command: /mnt/raid5_homes  *(rw,sync,no_subtree_check)
+
+
+-> exportfs -a
+
+
+-> systemctl restart nfs-kernel-server
+
+
+-> adduser rodrigo --home /var/user_homes
+
+
+##########
+# CLIENT #
+##########
+
+
+-> apt install nfs-common -y
+
+
+-> mkdir -p /var/user_homes
+
+
+-> mount -t nfs 10.0.100.100:/var/user_homes /var/user_homes
+#Private IP of the NFS Server.
+
+
+-> cat /etc/mtab 
+#Copy last line.
+
+
+-> nano /etc/fstab
+#Paste line and add "nofail"
