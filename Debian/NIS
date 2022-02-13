@@ -1,0 +1,55 @@
+Install and configure NIS package in your server.
+
+
+-> apt install nis -y
+#Domain should be: "inova.pt"
+
+
+-> nano /etc/default/nis
+#Change "NISSERVER=false" to "NISSERVER=master"
+
+
+-> nano /etc/ypserv.securenets
+#Change last line to "255.255.255.0   10.0.100.0"
+
+
+-> nano /var/yp/Makefile 
+#Change "MERGE_PASSWD=false" to "MERGE_PASSWD=true"
+#Change "MERGE_GROUP=false" to "MERGE_GROUP=true"
+
+
+########################################################
+# Do the client side steps and then come back to here! #
+########################################################
+
+
+-> /usr/lib/yp/ypinit -m
+#Press CTRL+D and then Y
+
+
+-> cd /var/yp && make
+#Use this everytime you create a new user so that it is update in the NIS server.
+
+
+##########
+# Client #
+##########
+
+
+-> apt install nis -y
+#Domain should be: "inova.pt"
+
+
+-> nano /etc/yp.conf 
+#Add in the end: "ypserver control.inova.pt"
+
+
+-> nano /etc/nsswitch.conf
+#Add "nis" in front of "passwd", "group", "shadow", "hosts".
+
+
+-> nano /etc/pam.d/common-session 
+#Add at the end: session optional        pam_mkhomedir.so skel=/etc/skel umask=077
+
+
+-> systemctl restart nis
