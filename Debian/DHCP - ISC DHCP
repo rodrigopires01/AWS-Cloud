@@ -29,7 +29,7 @@ subnet 10.0.100.0 netmask 255.255.255.0 {
 -> systemctl enable --now isc-dhcp-server
 
 
-In order to test the DHCP server(Client Machine:
+Test the DHCP server (Client Machine):
 
 
 -> apt install build-essential -y
