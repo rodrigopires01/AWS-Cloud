@@ -4,17 +4,13 @@ Install and configure EasyRSA package in your server.
 -> apt install easy-rsa -y
 
 
-
 -> cd /etc/ && cp -r /usr/share/easy-rsa/ .
-
 
 
 -> cd easy-rsa/
 
 
-
 -> ./easyrsa init-pki
-
 
 
 -> ./easyrsa build-ca
@@ -25,6 +21,7 @@ Install and configure EasyRSA package in your server.
 
 
 -> ./easyrsa build-server-full vpn.inova.pt nopass
+
 
 #You can find the certificate in: /etc/easy-rsa/pki/issued
 #As well as the private key in: /etc/easy-rsa/pki/private
