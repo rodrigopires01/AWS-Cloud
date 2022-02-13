@@ -1,0 +1,25 @@
+Example of a well configured netplan in order to have DNS, Gateway, etc.
+
+-> nano /etc/netplan/50-cloud-init.yaml
+
+#Should look like this, obviously you have to change IPs and nameservers.
+
+network:
+    ethernets:
+        eth0:
+            dhcp4: true
+            dhcp4-overrides:
+                use-dns: false
+                use-routes: false
+            routes:
+              - to: 0.0.0.0/0
+                via: 10.0.100.101
+                on-link: true
+            nameservers:
+                search: [inova.pt, enta.pt]
+                addresses: [10.0.100.100, 172.31.100.100]
+            dhcp6: false
+            match:
+                macaddress: 06:4c:7d:76:a4:3b
+            set-name: eth0
+    version: 2
