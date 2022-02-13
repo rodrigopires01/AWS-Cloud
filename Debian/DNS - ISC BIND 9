@@ -1,0 +1,72 @@
+<h1 align="center">Installation and configuration of DNS package via SSH.</h1>
+
+
+apt install bind9 bind9-utils bind9-doc -y
+
+
+cd /etc/bind
+
+
+nano named.conf.options
+#Uncomment forwarders lines.
+
+
+-> nano db.forward.enta.pt 
+- Trocar o nome do server e os IPs. 
+
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@	IN	NS	enta.pt.
+@       IN      A       172.31.144.100
+luxsrv  IN      A       172.31.144.100
+luxcli  IN      A       172.31.144.101
+mailsrv IN      A       172.31.144.100
+www     IN      CNAME   enta.pt.
+central IN      CNAME   enta.pt.
+smtp    IN      MX      10 mailsrv.enta.pt.
+
+
+
+-> nano db.reverse.enta.pt
+- Trocar o nome do server e os IPs.
+
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      enta.pt.
+100.144 IN      PTR     enta.pt.
+100.144 IN      PTR     www.enta.pt.
+100.144 IN      PTR     central.enta.pt.
+100.144 IN      PTR     luxsrv.enta.pt.
+100.144 IN      PTR     luxcli.enta.pt.
+100.144 IN      PTR     mailsrv.enta.pt.
+
+
+
+-> nano named.conf.local
+- Colar isto:
+
+zone "enta.pt" {
+        type master;
+        file "/etc/bind/db.forward.enta.pt";
+};
+
+zone "32.172.in-addr.arpa" {
+        type master;
+        file "/etc/bind/db.reverse.enta.pt";
+};
+
+
+
+-> systemctl start bind9 && systemctl enable bind9 && systemctl restart bind9 && systemctl status bind9
