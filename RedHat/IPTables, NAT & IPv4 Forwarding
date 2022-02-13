@@ -20,7 +20,7 @@ Click in "Save";
 -> systemctl enable --now iptables
 
 
--> iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE && netfilter-persistent save
+-> iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE && service iptables save
 
 
 -> nano /etc/sysctl.d/99-sysctl.conf && sysctl -p
