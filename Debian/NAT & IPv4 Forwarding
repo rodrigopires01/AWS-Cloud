@@ -1,0 +1,30 @@
+Go to AWS;
+
+Select the server instance;
+
+Click in "Actions";
+
+Click in "Networking";
+
+Click in "Change source/destination check";
+
+Click in"Stop";
+
+Click in "Save";
+
+
+
+-> apt install netfilter-persistent iptables-persistent -y
+
+
+
+-> systemctl enable --now iptables
+
+
+
+-> iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE && netfilter-persistent save
+
+
+
+-> nano /etc/sysctl.d/99-sysctl.conf && sysctl -p
+#Uncomment this line: "net.ipv4.ip_forward = 1"
