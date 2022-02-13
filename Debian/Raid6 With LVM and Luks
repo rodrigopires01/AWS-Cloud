@@ -1,0 +1,62 @@
+-> apt update && apt upgrade -y && apt install mdadm gdisk raidutils cryptsetup -y
+
+
+-> gdisk /dev/xvdf
+#Click: O, Y
+#Click: N, ENTER(3x), fd00, W, Y
+
+
+-> gdisk /dev/xvdg
+#Click: O, Y
+#Click: N, ENTER(3x), fd00, W, Y
+
+
+-> gdisk /dev/xvdh
+#Click: O, Y
+#Click: N, ENTER(3x), fd00, W, Y
+
+
+-> gdisk /dev/xvdi
+#Click: O, Y
+#Click: N, ENTER(3x), fd00, W, Y
+
+
+-> mdadm --create /dev/md0 --level 6 --raid-devices 4 /dev/xvdf1 /dev/xvdg1 /dev/xvdh1 /dev/xvdi1
+
+
+-> mdadm --detail /dev/md0
+#Wait until its 100%
+
+
+-> pvcreate /dev/md0
+
+
+-> vgcreate vg0 /dev/md0
+
+
+-> lvcreate -n lv0 -l +100%FREE vg0
+
+
+-> cryptsetup luksFormat --hash=sha512 --key-size=512 --cipher=aes-xts-plain64 --verify-passphrase /dev/vg0/lv0
+#Pass: Passw0rd1
+
+
+-> cryptsetup luksOpen /dev/vg0/lv0 vg0lv0_crypt
+#Pass: Passw0rd1
+
+
+-> mkfs.xfs /dev/mapper/vg0lv0_crypt
+
+
+-> mkdir /mnt/raid6
+
+
+-> mount /dev/mapper/vg1lv0_crypt /mnt/raid6
+
+
+-> cat /etc/mtab 
+#Copy last line.
+
+
+-> nano /etc/fstab
+#Paste line and add "nofail"
