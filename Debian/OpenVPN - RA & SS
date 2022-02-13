@@ -19,12 +19,10 @@ Remote Access:
 
 
 -> nano server_ra.conf
-
 #####################################################
 #Example of OpenVPN Remote Access config file.      #
 #Pay attention to the certificates and "push route".#
 #####################################################
-
 port 1194
 proto udp
 dev tun
@@ -42,8 +40,8 @@ persist-key
 persist-tun
 verb 3
 explicit-exit-notify 1
-
 #####################################################
+
 
 -> systemctl disable openvpn && systemctl stop openvpn
 
@@ -55,12 +53,10 @@ Site to Site:
 
 
 -> nano server_ss.conf
-
 ###########################################################
 #Example of OpenVPN Site to Site config file.             #
 #Pay attention to the IPs, ports, certificates and routes.#
 ###########################################################
-
 lport 11194
 remote 54.147.125.61
 rport 11194
@@ -82,7 +78,6 @@ status /var/log/openvpn/openvpn-status.log
 verb 3
 explicit-exit-notify 1
 tls-server
-
 ###########################################################
 
 
