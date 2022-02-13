@@ -1,1 +1,41 @@
+Install and configure OpenVPN package in your server.
 
+Note: The ta.key file should be the same on every machine that you install OpenVPN.
+
+
+Remote Access:
+
+
+-> apt install openvpn -y
+
+
+-> cd /etc/openvpn
+
+
+-> nano client.conf
+#####################################################
+#   Example of OpenVPN Remote Access config file    #
+#   Pay attention to the certificates and routes    #
+#####################################################
+client
+dev tun
+proto udp
+remote 52.39.105.130 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+ca ca.crt
+cert vpn.client.pt.crt
+key vpn.client.pt.key
+remote-cert-tls server
+tls-auth ta.key 1
+cipher AES-256-CBC
+verb 3
+#####################################################
+
+
+-> systemctl disable openvpn && systemctl stop openvpn
+
+
+-> systemctl enable --now openvpn@client
