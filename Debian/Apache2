@@ -1,0 +1,23 @@
+Install and configure Apache2 package in your server.
+
+
+-> apt install apache2 -y
+
+
+-> a2enmod ssl && a2ensite default-ssl.conf
+
+
+-> nano /etc/apache2/sites-available/default-ssl.conf
+#Change DocumentRoot para htmls.
+#Change certificate name.
+
+
+-> rm /var/www/html/index.html && nano /var/www/html/index.html
+#Type something like: "Welcome to my server on port 80!"
+
+
+-> mkdir /var/www/htmls && nano /var/www/htmls/index.html
+#Type something like: "Welcome to my server on port 443!"
+
+
+-> systemctl restart apache2
