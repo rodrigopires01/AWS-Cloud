@@ -1,5 +1,5 @@
 <h1 align="center">AWS Cloud based project using services such as EC2, VPC and EFS. </h1>
-<img src="https://user-images.githubusercontent.com/58471643/153730563-b3f12df9-c07e-4043-8dff-0409c6dd58f8.png" align="center"/>
+<img src="https://user-images.githubusercontent.com/58471643/153767646-5427af82-7169-41d1-a1a4-7d181260e9aa.png" align="center"/>
 
 <h2 align="center">In order to start this project I followed this order:</h2>
 1. Create both VPCs in each region;<br>
