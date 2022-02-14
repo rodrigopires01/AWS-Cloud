@@ -5,16 +5,23 @@
 ```
 ssh -i chave.pem ubuntu@central.inova.pt
 ```
+
+<br>
+
 Once that you're in, start by changing the hostname of the machine.
 
 ```
 sudo hostnamectl set-hostname central.inova.pt
 ```
 
+<br>
+
 Now lets change user to root.
 ```
 sudo su -
 ```
+
+<br>
 
 Lets configure our hosts so that we can easily SSH into other machines.
 ```
