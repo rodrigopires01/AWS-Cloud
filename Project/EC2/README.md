@@ -44,6 +44,8 @@
 * Storage: 30GB
 * Security Group: Client
 
+---
+
 # Instance Security
 
 ## Security Groups - Inbound Rules
@@ -77,6 +79,8 @@ All Traffic -> My IP
 ### INOVA, ENTA & Remote Client
 
 All Traffic -> Anywhere IPv4
+
+---
 
 # Follow this order so that you won't have any problems setting up packages.
 
