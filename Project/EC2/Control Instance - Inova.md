@@ -88,8 +88,11 @@ Copy the request
 ```
 cat /etc/easy-rsa/pki/reqs/ca.req
 ```
-#### Our SubCA request is now created.
+#### Our SubCA request is now created. 
+
+
 Head over to **control.enta.pt** in order to sign the SubCA.
+
 ---
 
 Now that you're back and have copied the signed SubCA just paste it as your ca.crt
@@ -97,6 +100,14 @@ Now that you're back and have copied the signed SubCA just paste it as your ca.c
 nano pki/ca.crt
 ```
 #### Now you have a Subordinate CA ready to sign certificates.
-
+since we have a running SubCA, lets generate all the certificates we are going to need the configure the whole network.
+```
+./easyrsa build-client-full vpn.client.pt nopass
+./easyrsa build-server-full vpn.inova.pt nopass
+./easyrsa build-client-full vpn.ss.enta.pt nopass
+./easyrsa build-server-full vpn.ra.enta.pt nopass
+./easyrsa build-server-full dmz.inova.pt nopass
+./easyrsa build-server-full central.inova.pt nopass
+```
 
 
