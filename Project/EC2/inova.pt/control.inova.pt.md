@@ -8,6 +8,11 @@ Once that you're in, start by changing the hostname of the machine.
 sudo hostnamectl set-hostname control.inova.pt
 ```
 
+Create a file with your public key to access the remaining instances on your network via SSH.
+```
+nano chave.pem && chmod 400 chave.pem
+```
+
 Now lets change user to root.
 ```
 sudo su -
