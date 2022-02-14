@@ -82,7 +82,7 @@ All Traffic -> Anywhere IPv4
 
 ---
 
-# Follow this order so that you won't have any problems setting up packages.
+## Follow this order so that you won't have any problems setting up packages.
 
 1. control.enta.pt
 2. control.inova.pt
