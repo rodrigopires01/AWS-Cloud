@@ -179,4 +179,4 @@ nano /etc/fstab
 
 ---
 
-## You're done, your www.inova.pt instance is fully configurated!
+## You're done, your wazuh.inova.pt instance is fully configurated!
