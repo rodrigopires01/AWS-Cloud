@@ -8,15 +8,21 @@ Once that you're in, start by changing the hostname of the machine.
 sudo hostnamectl set-hostname control.inova.pt
 ```
 
+<br>
+
 Create a file with your public key to access the remaining instances on your network via SSH.
 ```
 nano chave.pem && chmod 400 chave.pem
 ```
 
+<br>
+
 Now lets change user to root.
 ```
 sudo su -
 ```
+
+<br>
 
 Lets configure our hosts so that we can easily SSH into other machines.
 ```
@@ -39,15 +45,23 @@ Should look something like this:
 10.0.100.107  marketing.inova.pt
 ```
 
+<br>
+
 #### Now lets start installing the packages we will need.
 Update the Operating System
 ```
 apt update && apt upgrade -y
 ```
+
+<br>
+
 Install the packages that we will be using in our instance.
 ```
 apt install openvpn bind9 bind9-utils netfilter-persistent iptables-persistent easy-rsa -y
 ```
+
+<br>
+
 #### EasyRSA Configuration
 Copy the EasyRSA package files into a more accessible area
 ```
@@ -56,6 +70,9 @@ cp -R /usr/share/easy-rsa/ /etc/easy-rsa
 ```
 cd /etc/easy-rsa/
 ```
+
+<br>
+
 EasyRSA vars
 ```
 nano vars
@@ -81,14 +98,23 @@ set_var EASYRSA_REQ_OU         "SubCA"
 set_var EASYRSA_CA_EXPIRE      3650
 set_var EASYRSA_CERT_EXPIRE    1825
 ```
+
+<br>
+
 EasyRSA init-pki
 ```
 ./easyrsa init-pki
 ```
+
+<br>
+
 Build RootCA
 ```
 ./easyrsa build-ca subca
 ```
+
+<br>
+
 Copy the request
 ```
 cat /etc/easy-rsa/pki/reqs/ca.req
@@ -120,10 +146,16 @@ Change directory
 ```
 cd /etc/bind
 ```
+
+<br>
+
 Uncomment the forwarders
 ```
 nano named.conf.options
 ```
+
+<br>
+
 Create your forward zone like this
 ```
 nano forward.inova.pt 
@@ -149,6 +181,9 @@ wazuh           IN      A       10.0.100.105
 sales           IN      A       10.0.100.106
 marketing       IN      A       10.0.100.107
 ```
+
+<br>
+
 Create your reverse zone like this
 ```
 nano reverse.inova.pt 
@@ -172,6 +207,9 @@ $TTL    604800
 106.100 IN      PTR     sales.inova.pt.
 107.100 IN      PTR     marketing.inova.pt.
 ```
+
+<br>
+
 Define your zones
 ```
 nano named.conf.local
@@ -195,6 +233,9 @@ zone "enta.pt" {
         forwarders {172.31.100.100;};
 };
 ```
+
+<br>
+
 Apply your changes
 ```
 systemctl enable --now bind9.service
@@ -282,14 +323,23 @@ Change directory to
 ```
 cd /etc/openvpn/
 ```
+
+<br>
+
 Create a ta.key
 ```
 openvpn --genkey --secret ta.key
 ```
+
+<br>
+
 Generate a Diffie Helman key
 ```
 openssl dhparam -out dh2048.pem 2048
 ```
+
+<br>
+
 Configurate the Remote Access file
 ```
 nano server_ra.conf
@@ -318,6 +368,9 @@ verb 3
 explicit-exit-notify 1
 #####################################################
 ```
+
+<br>
+
 Configurate the Site to Site file
 ```
 nano server_ss.conf
@@ -350,10 +403,16 @@ explicit-exit-notify 1
 tls-server
 #############################################################
 ```
+
+<br>
+
 Disable the default openvpn service
 ```
 systemctl disable openvpn && systemctl stop openvpn
 ```
+
+<br>
+
 Enable both site to site and remote access services
 ```
 systemctl enable --now openvpn@server_ra
