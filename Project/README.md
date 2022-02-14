@@ -71,16 +71,16 @@ This last two instances will serve as an example of the following machines that 
 ## Configuration Procedures
 
 ### 1 - VPC <br>
-#### a) [VPC - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/VPC/VPC%20East%20Region) <br>
-#### b) [VPC - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/VPC/VPC%20West%20Region) <br>
+#### a) [VPC - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/VPC/VPC%20East%20Region.md) <br>
+#### b) [VPC - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/VPC/VPC%20West%20Region.md) <br>
 
 
 ### 2 - EFS <br>
-#### a) [EFS - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EFS/EFS%20East%20Region) <br>
-#### b) [EFS - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EFS/EFS%20West%20Region) <br>
+#### a) [EFS - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EFS/EFS%20East%20Region.md) <br>
+#### b) [EFS - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EFS/EFS%20West%20Region.md) <br>
 
 
 
 ### 3 - EC2 <br>
-#### a) [EC2 - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20East%20Region) <br>
-#### b) [EC2 - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20West%20Region) <br>
+#### a) [EC2 - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20East%20Region.md) <br>
+#### b) [EC2 - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20West%20Region.md) <br>
