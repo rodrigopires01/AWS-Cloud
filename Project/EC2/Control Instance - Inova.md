@@ -236,12 +236,41 @@ network:
 ##### IPTables Configuration
 
 This is the easiest configuration, here we're going to add routing destinations so that when we receive a client in our Public IP it will redirect to the right instances
+
+Flush IP Tables
 ```
-
+iptables -F
 ```
-
-
-
+Postrouting
+```
+iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+```
+Prerouting
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 444 -j DNAT --to-destination 10.0.100.105:443
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 20 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 21 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 990 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10000:101000 -j DNAT --to-destination 10.0.100.103
+```
+Save rules to IP Tables
+```
+netfilter-persistent save
+```
 
 
 
