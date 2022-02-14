@@ -90,6 +90,7 @@ cat /etc/easy-rsa/pki/reqs/ca.req
 ```
 #### Our SubCA request is now created.
 Head over to **control.enta.pt** in order to sign the SubCA.
+---
 
 Now that you're back and have copied the signed SubCA just paste it as your ca.crt
 ```
