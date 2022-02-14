@@ -65,3 +65,22 @@ With this service I will try to achieve, the needed requeriments for SOC2.
 **Services**
 
 This last two instances will serve as an example of the following machines that connect to our instance and therefore I will be installing a graphic user interface.
+
+---
+
+## Configuration Procedures
+
+### 1 - VPC <br>
+#### a) [VPC - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/VPC/VPC%20East%20Region) <br>
+#### b) [VPC - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/VPC/VPC%20West%20Region) <br>
+
+
+### 2 - EFS <br>
+#### a) [EFS - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EFS/EFS%20East%20Region) <br>
+#### b) [EFS - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EFS/EFS%20West%20Region) <br>
+
+
+
+### 3 - EC2 <br>
+#### a) [EC2 - East Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20East%20Region) <br>
+#### b) [EC2 - West Region](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20West%20Region) <br>
