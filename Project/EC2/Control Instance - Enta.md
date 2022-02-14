@@ -34,3 +34,76 @@ Should look something like this:
 10.0.100.106  sales.inova.pt
 10.0.100.107  marketing.inova.pt
 ```
+
+#### Now lets start installing the packages we will need.
+We need to install a pack of tools.
+```
+amazon-linux-extras install epel
+```
+And now the packages that we will be using in our instance.
+```
+yum install openvpn named iptables-services easy-rsa -y
+```
+#### EasyRSA Configuration
+Copy the EasyRSA package files into a more accessible area
+```
+cp -r /usr/share/easy-rsa/3.0.8/ /etc/
+```
+```
+cd /etc/easy-rsa/3/
+```
+EasyRSA vars
+```
+nano vars
+```
+Paste this:
+```
+if [ -z "$EASYRSA_CALLER" ]; then
+        echo "You appear to be sourcing an Easy-RSA 'vars' file." >&2
+        echo "This is no longer necessary and is disallowed. See the section called" >&2
+        echo "'How to use this file' near the top comments for more details." >&2
+        return 1
+fi
+
+set_var EASYRSA_DN     "org"
+
+set_var EASYRSA_REQ_COUNTRY    "PT"
+set_var EASYRSA_REQ_PROVINCE   "Azores"
+set_var EASYRSA_REQ_CITY       "Ponta Delgada"
+set_var EASYRSA_REQ_ORG        "ENTA Certificate Authority"
+set_var EASYRSA_REQ_EMAIL      "entaca@enta.pt"
+set_var EASYRSA_REQ_OU         "RootCA"
+
+set_var EASYRSA_CA_EXPIRE      3650
+set_var EASYRSA_CERT_EXPIRE    1825
+```
+EasyRSA init-pki
+```
+./easyrsa init-pki
+```
+Build RootCA
+```
+./easyrsa build-ca
+```
+#### Our RootCA is now created and ready to sign certificates.
+Head over to **control.inova.pt** in order to build the SubCA.
+
+Now that you have a SubCA request, ready to be signed, do the following commands.
+Paste your SubCA request into here
+```
+nano pki/reqs/subca.req
+```
+Sign it
+```
+./easyrsa sign-req ca subca
+```
+Copy the Signed SubCA
+```
+cat /etc/easy-rsa/3/pki/issued/ca.crt
+```
+Head over to **control.inova.pt** to complete the SubCA.
+
+#### EasyRSA is done for now. Lets move into the next step: OpenVPN
+```
+cd /etc/openvpn/
+```
