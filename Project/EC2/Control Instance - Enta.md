@@ -103,7 +103,8 @@ cat /etc/easy-rsa/3/pki/issued/ca.crt
 ```
 Head over to **control.inova.pt** to complete the SubCA.
 
-#### EasyRSA is done for now. Lets move into the next step: OpenVPN
+#### EasyRSA is done for now. Lets move into the next step.
+### OpenVPN
 ```
 cd /etc/openvpn/
 ```
