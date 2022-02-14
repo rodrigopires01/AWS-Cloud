@@ -82,5 +82,5 @@ This last two instances will serve as an example of the following machines that 
 
 
 ### 3 - EC2 <br>
-#### a) [EC2](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20Configuration.md) <br>
+#### a) [EC2 - Both Regions](https://github.com/rodrigopires01/AWS-Cloud/blob/main/Project/EC2/EC2%20Configuration.md) <br>
 
