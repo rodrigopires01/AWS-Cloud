@@ -100,7 +100,7 @@ Now that you're back and have copied the signed SubCA just paste it as your ca.c
 nano pki/ca.crt
 ```
 #### Now you have a Subordinate CA ready to sign certificates.
-since we have a running SubCA, lets generate all the certificates we are going to need the configure the whole network.
+Since we have a running SubCA, lets generate all the certificates we are going to need the configure the whole network.
 ```
 ./easyrsa build-client-full vpn.client.pt nopass
 ./easyrsa build-server-full vpn.inova.pt nopass
@@ -109,5 +109,177 @@ since we have a running SubCA, lets generate all the certificates we are going t
 ./easyrsa build-server-full dmz.inova.pt nopass
 ./easyrsa build-server-full central.inova.pt nopass
 ```
+
+##### DNS Configuration
+Change directory
+```
+cd /etc/bind
+```
+Uncomment the forwarders
+```
+nano named.conf.options
+```
+Create your forward zone like this
+```
+nano forward.inova.pt 
+```
+```
+$TTL    604800
+@       IN      SOA     inova.pt. root.inova.pt. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+                IN      NS      ns
+@               IN      A       10.0.100.100
+ns              IN      A       10.0.100.100
+control         IN      A       10.0.100.100
+teleport        IN      A       10.0.100.100
+*.teleport      IN      A       10.0.100.100
+www             IN      CNAME   inova.pt.
+central         IN      A       10.0.100.104
+wazuh           IN      A       10.0.100.105
+sales           IN      A       10.0.100.106
+marketing       IN      A       10.0.100.107
+```
+Create your reverse zone like this
+```
+nano reverse.inova.pt 
+```
+```
+$TTL    604800
+@       IN      SOA     inova.pt. root.inova.pt. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      inova.pt.
+100.100 IN      PTR     inova.pt.
+100.100 IN      PTR     control.inova.pt.
+100.100 IN      PTR     teleport.inova.pt.
+103.100 IN      PTR     www.inova.pt.
+104.100 IN      PTR     central.inova.pt.
+105.100 IN      PTR     wazuh.inova.pt.
+106.100 IN      PTR     sales.inova.pt.
+107.100 IN      PTR     marketing.inova.pt.
+```
+Define your zones
+```
+nano named.conf.local
+```
+```
+zone "inova.pt" {
+        type master;
+        file "/etc/bind/forward.inova.pt";
+};
+
+zone "0.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/reverse.inova.pt";
+};
+
+################################################################################################
+#This part is necessary in order to have your server re-direct querys to the "enta.pt" network.#
+################################################################################################
+zone "enta.pt" {
+        type forward;
+        forwarders {172.31.100.100;};
+};
+```
+Apply your changes
+```
+systemctl enable --now bind9.service
+```
+##### Now that we have DNS Configured and running properly lets re-configure our netplan so that we use our DNS server and add our third network interface. Be careful with the IPs and MAC Addresses.
+```
+nano /etc/netplan/50-cloud-init.yaml
+```
+```
+network:
+    ethernets:
+        eth0:
+            dhcp4: true
+            dhcp4-overrides:
+                route-metric: 100
+                use-dns: false
+            nameservers:
+                search: [inova.pt, enta.pt]
+                addresses: [10.0.100.100, 172.31.100.100]
+            dhcp6: false
+            match:
+                macaddress: 06:d5:6b:87:6a:e3
+            set-name: eth0
+        eth1:
+            dhcp4: true
+            dhcp4-overrides:
+                route-metric: 200
+            dhcp6: false
+            match:
+                macaddress: 06:be:09:28:5b:91
+            set-name: eth1
+        eth2:
+            dhcp4: true
+            dhcp4-overrides:
+                route-metric: 200
+            dhcp6: false
+            match:
+                macaddress: 06:70:45:06:68:2d
+            set-name: eth2
+
+    version: 2
+```
+
+##### IPTables Configuration
+
+This is the easiest configuration, here we're going to add routing destinations so that when we receive a client in our Public IP it will redirect to the right instances
+```
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
