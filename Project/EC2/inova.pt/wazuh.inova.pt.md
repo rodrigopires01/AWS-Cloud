@@ -77,13 +77,106 @@ apt update && apt upgrade -y
 
 <br>
 
-Install the packages that we will be using in our instance.
-```
-apt install nis nfs-kernel-server postfix postfix-doc dovecot-imapd dovecot-pop3d sasl2-bin -y
-```
+#### Wazuh
 
 This machine only has Wazuh installed and you can follow the instructions how to setup a wazuh [machine here](https://documentation.wazuh.com/current/installation-guide/open-distro/all-in-one-deployment/all-in-one.html).
 
+---
+
+#### Raid6
+
+Go to the EC2 Volume section, create 4 disks and attach them to this instance.
+Now lets create the partitions.
+```
+gdisk /dev/xvdf
+```
+```
+gdisk /dev/xvdg
+```
+```
+gdisk /dev/xvdh
+```
+```
+gdisk /dev/xvdi
+```
+
 <br>
+
+Create the Raid6
+```
+mdadm --create /dev/md0 --level 6 --raid-devices 4 /dev/xvdf1 /dev/xvdg1 /dev/xvdh1 /dev/xvdi1
+```
+
+<br>
+
+Create a physical volume using LVM
+```
+pvcreate /dev/md0
+```
+
+<br>
+
+Create a volume group using LVM
+```
+vgcreate vg0 /dev/md0
+```
+
+<br>
+
+Create a logical volume using LVM
+```
+lvcreate -n lv0 -l +100%FREE vg0
+```
+
+<br>
+
+Encrypt your raid with luksCrypt
+```
+cryptsetup luksFormat --hash=sha512 --key-size=512 --cipher=aes-xts-plain64 --verify-passphrase /dev/vg0/lv0
+```
+
+<br>
+
+Decrypt temporarily your raid
+```
+cryptsetup luksOpen /dev/vg0/lv0 vg0lv0_crypt
+```
+
+<br>
+
+Make filesystem
+```
+mkfs.xfs /dev/mapper/vg0lv0_crypt
+```
+
+<br>
+
+Make a directory 
+```
+mkdir /mnt/raid6
+```
+
+<br>
+
+Mount your filesystem
+```
+mount /dev/mapper/vg1lv0_crypt /mnt/raid6
+```
+
+<br>
+
+Copy the last line.
+```
+cat /etc/mtab
+```
+
+<br>
+
+Paste the line you just copied and add "nofail".
+```
+nano /etc/fstab
+```
+
+---
 
 ## You're done, your www.inova.pt instance is fully configurated!
