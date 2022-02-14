@@ -271,26 +271,93 @@ Save rules to IP Tables
 ```
 netfilter-persistent save
 ```
+#### Finally we're configuring the VPN
 
+Change directory to
+```
+cd /etc/openvpn/
+```
+Create a ta.key
+```
+openvpn --genkey --secret ta.key
+```
+Generate a Diffie Helman key
+```
+openssl dhparam -out dh2048.pem 2048
+```
+Configurate the Remote Access file
+```
+nano server_ra.conf
+```
+```
+#####################################################
+#   Example of OpenVPN Remote Access config file    #
+#   Pay attention to the certificates and routes    #
+#####################################################
+port 1194
+proto udp
+dev tun
+ca ca.crt
+cert vpn.inova.pt.crt
+key vpn.inova.pt.key
+dh dh2048.pem
+server 10.10.0.0 255.255.255.0
+ifconfig-pool-persist /var/log/openvpn/ipp.txt
+push "route 10.0.100.0 255.255.255.0"
+keepalive 10 120
+tls-auth ta.key 0
+cipher AES-256-CBC
+persist-key
+persist-tun
+verb 3
+explicit-exit-notify 1
+#####################################################
+```
+Configurate the Site to Site file
+```
+nano server_ss.conf
+```
+```
+#############################################################
+#  Example of OpenVPN Site to Site main server config file  #
+#  Pay attention to the IPs, ports, certificates and routes #
+#############################################################
+lport 11194
+remote 54.147.125.61
+rport 11194
+ifconfig 10.1.100.100 10.1.100.101
+route 172.31.100.0 255.255.255.0
+proto udp
+dev tun
+ca ca.crt
+cert vpn.inova.pt.crt
+key vpn.inova.pt.key
+dh dh2048.pem
+push "route 10.0.100.0 255.255.255.0"
+keepalive 10 120
+tls-auth ta.key 0
+cipher AES-256-CBC
+persist-key
+persist-tun
+status /var/log/openvpn/openvpn-status.log
+verb 3
+explicit-exit-notify 1
+tls-server
+#############################################################
+```
+Disable the default openvpn service
+```
+systemctl disable openvpn && systemctl stop openvpn
+```
+Enable both site to site and remote access services
+```
+systemctl enable --now openvpn@server_ra
+```
+```
+systemctl enable --now openvpn@server_ss
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## You're done, your control.inova.pt instance is fully configurated!
 
 
 
