@@ -32,7 +32,7 @@ By using a specific route, such as the one described before, the network will be
 
 FTP and HTTP/HTTPS
 
-In the Inova network I will be installing vsftpd and Apache2.
+In the Inova network I will be installing vsftpd and Apache2.<br>
 In the Enta network I will be installing ProFTPD and Nginx.
 
 ---
@@ -41,12 +41,12 @@ In the Enta network I will be installing ProFTPD and Nginx.
 
 **Services**
 
-NFS = Network File System
+NFS = Network File System<br>
 NIS = Network Information Service
 
-Mail Server
-In the Inova network I will be installing Postfix and Dovecot.
-In the Inova network I will be installing Postfix and Courier.
+Mail Servers:<br>
+In the Inova network I will be installing Postfix and Dovecot.<br>
+In the Enta network I will be installing Postfix and Courier.
 
 ---
 
@@ -54,8 +54,8 @@ In the Inova network I will be installing Postfix and Courier.
 
 **Services**
 
-The only service that is going to be installed here will be Wazuh. 
-Wazuh is a enterprise-ready security monitoring solution for threat detection, integrity monitoring, incident response and compliance.
+The only service that is going to be installed here will be Wazuh.<br>
+Wazuh is a enterprise-ready security monitoring solution for threat detection, integrity monitoring, incident response and compliance.<br>
 With this service I will try to achieve, the needed requeriments for SOC2.
 
 ---
