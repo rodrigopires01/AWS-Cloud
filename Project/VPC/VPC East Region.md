@@ -8,3 +8,5 @@
 
 ### Edit the IPs and availibity zone as shown below and then click "Create VPC"
 ![vpc3](https://user-images.githubusercontent.com/58471643/153785375-0e690232-6c55-4abc-9f5b-6b073e2c5c12.png)
+
+### That's it!
