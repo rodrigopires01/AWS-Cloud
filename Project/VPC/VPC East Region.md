@@ -1,4 +1,4 @@
-## Virtual Private Cloud Setup
+## Virtual Private Cloud Setup - East Region
 
 ### Click on the "Launch VPC Wizard" orange button
 ![vpc1](https://user-images.githubusercontent.com/58471643/153785149-993948e3-891d-45bf-95ef-a2192f3ee7ea.png)
