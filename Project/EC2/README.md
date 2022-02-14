@@ -1,18 +1,3 @@
-# Follow this order so that you won't have any problems setting up packages.
-
-1. control.enta.pt
-2. control.inova.pt
-3. www.inova.pt
-4. central.inova.pt
-5. wazuh.inova.pt
-6. sales.inova.pt
-7. marketing.inova.pt
-8. www.enta.pt
-9. central.enta.pt
-10. wazuh.enta.pt
-11. sales.enta.pt
-12. marketing.enta.pt
-
 # Instance Settings
 
 ## INOVA & ENTA
@@ -58,3 +43,52 @@
 * VPC: Client
 * Storage: 30GB
 * Security Group: Client
+
+# Instance Security
+
+## Security Groups - Inbound Rules
+
+### INOVA
+
+All Traffic -> My IP<br>
+All Traffic -> 10.0.0.0/8<br>
+All Traffic -> 172.16.0.0/12<br>
+All Traffic -> Public IP Client<br>
+All Traffic -> Public IP Enta<br>
+
+---
+
+### ENTA
+
+All Traffic -> My IP<br>
+All Traffic -> 10.0.0.0/8<br>
+All Traffic -> 172.16.0.0/12<br>
+All Traffic -> Public IP Client<br>
+All Traffic -> Public IP Inova<br>
+
+---
+
+### Remote Client
+
+All Traffic -> My IP
+
+## Security Groups - Outbound Rules
+
+### INOVA, ENTA & Remote Client
+
+All Traffic -> Anywhere IPv4
+
+# Follow this order so that you won't have any problems setting up packages.
+
+1. control.enta.pt
+2. control.inova.pt
+3. www.inova.pt
+4. central.inova.pt
+5. wazuh.inova.pt
+6. sales.inova.pt
+7. marketing.inova.pt
+8. www.enta.pt
+9. central.enta.pt
+10. wazuh.enta.pt
+11. sales.enta.pt
+12. marketing.enta.pt
