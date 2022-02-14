@@ -87,7 +87,7 @@ Build RootCA
 ```
 #### Our RootCA is now created and ready to sign certificates.
 Head over to **control.inova.pt** in order to build the SubCA.
-
+---
 Now that you have a SubCA request, ready to be signed, do the following commands.
 Paste your SubCA request into here
 ```
