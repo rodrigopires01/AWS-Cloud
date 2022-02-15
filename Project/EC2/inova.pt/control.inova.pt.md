@@ -420,4 +420,12 @@ systemctl enable --now openvpn@server_ra
 systemctl enable --now openvpn@server_ss
 ```
 
+<br>
+
+### Teleport
+
+To install teleport, you can follow their [guide](https://goteleport.com/docs/getting-started/linux-server/) which provides a lot a information and it is pretty easy to understand.
+
+<br>
+
 ## You're done, your control.inova.pt instance is fully configurated!
