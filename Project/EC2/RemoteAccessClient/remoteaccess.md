@@ -66,7 +66,7 @@ nano ta.key
 
 <br>
 
-Configurate the Remote Access file
+Configurate the Remote Access file to Inova Server
 ```
 nano server_ra_inova.conf
 ```
@@ -75,29 +75,27 @@ nano server_ra_inova.conf
 #   Example of OpenVPN Remote Access config file    #
 #   Pay attention to the certificates and routes    #
 #####################################################
-port 11940
-proto udp
+client
 dev tun
-ca ca.crt
-cert vpn.ra.enta.pt.crt
-key vpn.ra.enta.pt.key
-dh dh2048.pem
-server 10.15.0.0 255.255.255.0
-ifconfig-pool-persist /var/log/openvpn/ipp.txt
-push "route 172.31.100.0 255.255.255.0"
-keepalive 10 120
-tls-auth ta.key 0
-cipher AES-256-CBC
+proto udp
+remote 52.39.105.130 1194
+resolv-retry infinite
+nobind
 persist-key
 persist-tun
+ca ca.crt
+cert vpn.client.pt.crt
+key vpn.client.pt.key
+remote-cert-tls server
+tls-auth ta.key 1
+cipher AES-256-CBC
 verb 3
-explicit-exit-notify 1
 #####################################################
 ```
 
 <br>
 
-Configurate the Remote Access file
+Configurate the Remote Access file to Enta Server
 ```
 nano server_ra_inova.conf
 ```
@@ -106,23 +104,21 @@ nano server_ra_inova.conf
 #   Example of OpenVPN Remote Access config file    #
 #   Pay attention to the certificates and routes    #
 #####################################################
-port 11940
-proto udp
+client
 dev tun
-ca ca.crt
-cert vpn.ra.enta.pt.crt
-key vpn.ra.enta.pt.key
-dh dh2048.pem
-server 10.15.0.0 255.255.255.0
-ifconfig-pool-persist /var/log/openvpn/ipp.txt
-push "route 172.31.100.0 255.255.255.0"
-keepalive 10 120
-tls-auth ta.key 0
-cipher AES-256-CBC
+proto udp
+remote 54.147.125.61 11940
+resolv-retry infinite
+nobind
 persist-key
 persist-tun
+ca ca.crt
+cert vpn.client.pt.crt
+key vpn.client.pt.key
+remote-cert-tls server
+tls-auth ta.key 1
+cipher AES-256-CBC
 verb 3
-explicit-exit-notify 1
 #####################################################
 ```
 <br>
@@ -136,7 +132,7 @@ systemctl disable openvpn && systemctl stop openvpn
 
 Enable both site to site and remote access services
 ```
-systemctl enable --now openvpn@server_ra_enta
+systemctl enable --now openvpn@server_ra_inova
 ```
 ```
 systemctl enable --now openvpn@server_ra_enta
