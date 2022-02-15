@@ -76,6 +76,16 @@ network:
 
 <br>
 
+Lets try and apply our changes
+```
+netplan try
+```
+```
+netplan apply
+```
+
+<br>
+
 #### Now lets start installing the packages we will need.
 Update the Operating System.
 ```
