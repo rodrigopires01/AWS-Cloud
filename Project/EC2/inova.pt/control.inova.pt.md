@@ -317,9 +317,8 @@ Save rules to IP Tables
 ```
 netfilter-persistent save
 ```
-#### Finally we're configuring the VPN
+#### VPN Configuration
 
-Change directory to
 ```
 cd /etc/openvpn/
 ```
