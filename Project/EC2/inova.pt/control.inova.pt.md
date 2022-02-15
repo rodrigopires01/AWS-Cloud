@@ -317,7 +317,10 @@ Save rules to IP Tables
 ```
 netfilter-persistent save
 ```
-#### VPN Configuration
+
+<br>
+
+### VPN Configuration
 
 ```
 cd /etc/openvpn/
