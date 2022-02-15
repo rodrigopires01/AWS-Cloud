@@ -279,6 +279,18 @@ network:
     version: 2
 ```
 
+<br>
+
+Lets try and apply our changes
+```
+netplan try
+```
+```
+netplan apply
+```
+
+<br>
+
 ##### IPTables Configuration
 
 This is the easiest configuration, here we're going to add routing destinations so that when we receive a client in our Public IP it will redirect to the right instances
