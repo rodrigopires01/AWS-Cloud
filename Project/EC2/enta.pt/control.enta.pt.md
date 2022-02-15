@@ -348,32 +348,23 @@ iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 Prerouting
 ```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 10.0.100.103
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 172.31.100.103
 ```
 ```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j DNAT --to-destination 10.0.100.103
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j DNAT --to-destination 172.31.100.103
 ```
 ```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 444 -j DNAT --to-destination 10.0.100.105:443
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 20 -j DNAT --to-destination 172.31.100.103
 ```
 ```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 20 -j DNAT --to-destination 10.0.100.103
-```
-```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 21 -j DNAT --to-destination 10.0.100.103
-```
-```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 990 -j DNAT --to-destination 10.0.100.103
-```
-```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10000:101000 -j DNAT --to-destination 10.0.100.103
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 21 -j DNAT --to-destination 172.31.100.103
 ```
 
 <br>
 
 Save rules to IP Tables
 ```
-netfilter-persistent save
+service iptables save
 ```
 
 <br>
