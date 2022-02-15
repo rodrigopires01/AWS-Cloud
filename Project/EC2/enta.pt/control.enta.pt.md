@@ -49,7 +49,7 @@ amazon-linux-extras install epel
 
 And now the packages that we will be using in our instance.
 ```
-yum install openvpn named iptables-services easy-rsa -y
+yum install openvpn bind bind-utils iptables-services easy-rsa -y
 ```
 
 <br>
@@ -233,8 +233,148 @@ systemctl enable --now openvpn@server_ra
 systemctl enable --now openvpn@server_ss
 ```
 
+### DNS
 
+<br>
 
+Edit this file.
+```
+nano /etc/named.conf
+```
+In "listen-on port 53" add "any;"
+In "allow-query" add "any;".
+At the end of the file before "include" add our zones. Example:
+```
+zone "enta.pt" IN {
+        type master;
+        file "forward.enta.pt";
+        allow-update { none; };
+};
+
+zone "31.172.in-addr.arpa" IN {
+        type master;
+        file "reverse.enta.pt";
+        allow-update { none; };
+};
+```
+
+<br>
+
+Create the forward zone.
+
+nano /etc/named/forward.enta.pt
+```
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+                IN      NS      ns
+@               IN      A       172.31.100.100
+ns              IN      A       172.31.100.100
+control         IN      A       172.31.100.100
+www             IN      CNAME   enta.pt.
+central         IN      A       172.31.100.104
+wazuh           IN      A       172.31.100.105
+sales           IN      A       172.31.100.106
+marketing       IN      A       172.31.100.107
+```
+
+<br>
+
+Create the reverse zone.
+
+nano /etc/named/reverse.enta.pt
+```
+$TTL    604800
+@       IN      SOA     enta.pt. root.enta.pt. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      enta.pt.
+100.100 IN      PTR     enta.pt.
+100.100 IN      PTR     control.enta.pt.
+103.100 IN      PTR     www.enta.pt.
+104.100 IN      PTR     central.enta.pt.
+105.100 IN      PTR     wazuh.enta.pt.
+106.100 IN      PTR     sales.enta.pt.
+107.100 IN      PTR     marketing.enta.pt.
+```
+
+<br>
+
+Change the files permission
+```
+chown root:named forward.enta.pt
+```
+```
+chown root:named reverse.enta.pt
+```
+
+<br>
+
+Restart the service
+```
+systemctl enable --now named
+```
+
+<br>
+
+### IPTables Configuration
+
+This is the easiest configuration, here we're going to add routing destinations so that when we receive a client in our Public IP it will redirect to the right instances
+
+<br>
+
+Flush IP Tables
+```
+iptables -F
+```
+
+<br>
+
+Postrouting
+```
+iptables -F && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+```
+
+<br>
+
+Prerouting
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 444 -j DNAT --to-destination 10.0.100.105:443
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 20 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 21 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 990 -j DNAT --to-destination 10.0.100.103
+```
+```
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10000:101000 -j DNAT --to-destination 10.0.100.103
+```
+
+<br>
+
+Save rules to IP Tables
+```
+netfilter-persistent save
+```
 
 <br>
 
