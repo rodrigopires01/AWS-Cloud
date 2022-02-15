@@ -55,8 +55,8 @@
 All Traffic -> My IP<br>
 All Traffic -> 10.0.0.0/8<br>
 All Traffic -> 172.16.0.0/12<br>
-All Traffic -> Public IP Client<br>
-All Traffic -> Public IP Enta<br>
+All Traffic -> Public IP Remote Client<br>
+All Traffic -> Public IP Control Enta<br>
 
 ---
 
@@ -65,8 +65,8 @@ All Traffic -> Public IP Enta<br>
 All Traffic -> My IP<br>
 All Traffic -> 10.0.0.0/8<br>
 All Traffic -> 172.16.0.0/12<br>
-All Traffic -> Public IP Client<br>
-All Traffic -> Public IP Inova<br>
+All Traffic -> Public IP Remote Client<br>
+All Traffic -> Public IP Control Inova<br>
 
 ---
 
