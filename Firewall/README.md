@@ -119,52 +119,34 @@
 -A OUTPUT -d 192.168.0.32/27 -o eth1 -p icmp -m icmp --icmp-type 0 -m state --state NEW,ESTABLISHED -j ACCEPT
 
 ### EAST ###
+
 #Permitir SSH para a EAST
-
 <br>
-
 -A OUTPUT -d 192.168.0.64/27 -o eth2 -p tcp -m tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
-
 <br>
 
 #Permitir Porta 80 EAST
-
 <br>
-
 -A OUTPUT -d 192.168.0.64/27 -o eth2 -p tcp -m tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
-
 <br>
 
 #Permitir Porta 8080 EAST
-
 <br>
-
 -A OUTPUT -d 192.168.0.64/27 -o eth2 -p tcp -m tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
-
 <br>
 
 #Permitir Porta 8080 EAST
-
 <br>
-
 -A OUTPUT -d 192.168.0.64/27 -o eth2 -p udp -m udp --dport 1123 -m state --state NEW,ESTABLISHED -j ACCEPT
-
 <br>
 
 #Permitir PINGs EAST
-
 <br>
-
 -A OUTPUT -d 192.168.0.64/27 -o eth2 -p icmp -m icmp --icmp-type 0 -m state --state NEW,ESTABLISHED -j ACCEPT
-
 <br>
 
 #LOGS
-
 <br>
-
 -A OUTPUT -j LOG --log-prefix "IPTABLES:OUTPUT:Denied: " --log-level 7
-
 <br>
-
 -A OUTPUT -j REJECT --reject-with icmp-port-unreachable
