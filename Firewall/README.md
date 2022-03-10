@@ -1,3 +1,16 @@
+Ubuntu Server 20.04 - Firewall using iptables package.
+
+-> apt install netfilter-persistent iptables-persistent -y
+
+
+-> systemctl enable --now iptables
+
+
+-> iptables -F
+
+
+-> nano /etc/iptables/rules.v4
+
 #Nao ficar trancado lado de fora
 -A INPUT -i lo -j ACCEPT
 -A INPUT -i eth0 -p tcp -m tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
