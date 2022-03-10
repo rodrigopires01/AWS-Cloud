@@ -1,5 +1,7 @@
 Ubuntu Server 20.04 - Firewall using iptables package.
 
+-> apt update && apt upgrade -y
+
 -> apt install netfilter-persistent iptables-persistent -y
 
 
@@ -7,6 +9,9 @@ Ubuntu Server 20.04 - Firewall using iptables package.
 
 
 -> iptables -F
+
+
+-> netfilter-persitent save
 
 
 -> nano /etc/iptables/rules.v4
