@@ -11,7 +11,7 @@
 -> iptables -F
 
 
--> netfilter-persitent save
+-> netfilter-persistent save
 
 
 -> nano /etc/iptables/rules.v4
